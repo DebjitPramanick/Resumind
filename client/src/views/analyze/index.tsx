@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { useAppContext } from "@/contexts";
 import * as Styled from "./index.styled";
 import { useParser, useRequestState } from "@/hooks";
-import { Spinner, Text, Button } from "@/components/atoms";
 import { questionsApi } from "@/api";
 import { StepProgress, Step } from "@/components/molecules/StepProgress";
 import { useImmer } from "use-immer";
 import { parseAIResponse } from "@/utils";
+import { Questions } from "./components/Questions";
 
 const STEP_CHANGE_DELAY = 1000;
 
@@ -128,28 +128,15 @@ export const AnalyzeView = () => {
 
   if (pageState.isReadyToShowQuestions) {
     const { choices } = generateQuestionsRequestStates.data;
-
     const jsonContent = choices[0].message.content;
     const questions = parseAIResponse(jsonContent);
-    console.log(questions);
 
     nodeToRender = (
-      <>
-        {/* <Styled.Title>Resume Analysis</Styled.Title>
-        {Object.entries(parserState.data.sections).map(([key, content]) => {
-          if (!content.trim()) return null;
-
-          return (
-            <Styled.Section key={key}>
-              <Styled.SectionTitle>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </Styled.SectionTitle>
-              <Styled.SectionContent>{content}</Styled.SectionContent>
-            </Styled.Section>
-          );
-        })} */}
-        Questions are ready
-      </>
+      <Questions
+        questions={questions}
+        pdfFile={pdfFile as File}
+        isVisible={pageState.isReadyToShowQuestions}
+      />
     );
   } else {
     nodeToRender = (

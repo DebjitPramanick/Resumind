@@ -3,8 +3,8 @@ import { Box, Text, Flex, Spinner } from "@/components/atoms";
 import { AlertCircle } from "react-feather";
 
 export const AnalyzeContainer = styled(Box)`
-  max-width: 800px;
   margin: 0 auto;
+  height: calc(100vh - 72px - 64px);
 `;
 
 export const Title = styled(Text)`
