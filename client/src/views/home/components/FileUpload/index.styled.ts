@@ -1,22 +1,29 @@
 import styled, { css } from "styled-components";
 import { Upload } from "react-feather";
-import { Box } from "@/components/atoms";
+import { Box, Flex } from "@/components/atoms";
+import type { FlexProps } from "@/components/atoms/Flex";
 
-interface UploadSectionProps {
+interface UploadSectionProps extends FlexProps {
   borderColor?: string;
 }
 
-export const UploadSection = styled(Box)<UploadSectionProps>`
+export const UploadSection = styled(Flex)<UploadSectionProps>`
+  min-height: 400px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   background: ${({ theme }) => theme.colors.surface};
   border: 2px dashed
     ${({ borderColor, theme }) => borderColor || theme.colors.border};
   border-radius: 16px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  box-shadow: ${({ theme }) => theme.colors.utils.shadow.sm};
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => `${theme.colors.primary}10`};
+    background: ${({ theme }) => `${theme.colors.primary}05`};
+    box-shadow: ${({ theme }) => theme.colors.utils.shadow.md};
   }
 `;
 

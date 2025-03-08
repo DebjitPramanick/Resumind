@@ -5,12 +5,13 @@ import Logo from "./Logo";
 const StyledHeader = styled.header`
   width: 100%;
   height: 72px;
-  background-color: ${({ theme }) => theme.colors.background};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: rgba(255, 255, 255, 0.98);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
+  backdrop-filter: blur(8px);
+  box-shadow: ${({ theme }) => theme.colors.utils.shadow.sm};
 `;
 
 const HeaderContainer = styled(Flex)`

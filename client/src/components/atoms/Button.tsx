@@ -33,9 +33,11 @@ const variantStyles = {
     background-color: ${({ theme }) => theme.colors.primary};
     color: #ffffff;
     border: none;
+    box-shadow: ${({ theme }) => theme.colors.utils.shadow.sm};
 
     &:hover:not(:disabled) {
       background-color: ${({ theme }) => theme.colors.secondary};
+      box-shadow: ${({ theme }) => theme.colors.utils.shadow.md};
     }
   `,
   outlined: css`
@@ -44,7 +46,9 @@ const variantStyles = {
     border: 2px solid ${({ theme }) => theme.colors.primary};
 
     &:hover:not(:disabled) {
-      background-color: ${({ theme }) => theme.colors.surface};
+      background-color: ${({ theme }) => `${theme.colors.primary}05`};
+      border-color: ${({ theme }) => theme.colors.secondary};
+      color: ${({ theme }) => theme.colors.secondary};
     }
   `,
   transparent: css`
@@ -53,12 +57,15 @@ const variantStyles = {
     border: none;
 
     &:hover:not(:disabled) {
-      background-color: ${({ theme }) => theme.colors.surface};
+      background-color: ${({ theme }) => `${theme.colors.primary}05`};
     }
   `,
 };
 
 export const Button = styled.button<ButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;

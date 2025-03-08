@@ -1,13 +1,7 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Flex, Box } from "@/components/atoms";
-import {
-  UploadSection,
-  UploadIcon,
-  UploadText,
-  SupportedFormats,
-  ErrorText,
-} from "./index.styled";
+import * as Styled from "./index.styled";
 import { useTheme } from "styled-components";
 
 interface FileUploadProps {
@@ -45,9 +39,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
   const isError = isDragReject || fileRejections.length > 0;
 
   return (
-    <UploadSection
+    <Styled.UploadSection
       {...getRootProps()}
       p="xl"
+      gap="md"
       bg={
         isError
           ? `${theme.colors.error}10`
@@ -65,22 +60,26 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
     >
       <input {...getInputProps()} />
       <Flex direction="column" align="center" justify="center">
-        <UploadIcon error={isError} />
-        <UploadText>
+        <Styled.UploadIcon error={isError} />
+        <Styled.UploadText>
           {isError
             ? "Please upload a PDF file"
             : "Drag and drop your PDF file here"}
-        </UploadText>
+        </Styled.UploadText>
         <Box mb="md">
           <Button as="label" variant="outlined" size="large">
             Choose File
           </Button>
         </Box>
         {isError && fileRejections.length > 0 && (
-          <ErrorText>Only PDF files are allowed</ErrorText>
+          <Styled.ErrorText>Only PDF files are allowed</Styled.ErrorText>
         )}
-        {!isError && <SupportedFormats>Supported format: PDF</SupportedFormats>}
+        {!isError && (
+          <Styled.SupportedFormats>
+            Supported format: PDF
+          </Styled.SupportedFormats>
+        )}
       </Flex>
-    </UploadSection>
+    </Styled.UploadSection>
   );
 };

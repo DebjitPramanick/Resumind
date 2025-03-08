@@ -1,4 +1,3 @@
-import "@/styles/globals.css";
 import "@fontsource/manrope/300.css"; // Light
 import "@fontsource/manrope/400.css"; // Regular
 import "@fontsource/manrope/500.css"; // Medium

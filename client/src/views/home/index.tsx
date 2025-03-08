@@ -16,9 +16,9 @@ export const HomeView = () => {
 
   return (
     <Styled.HomeContainer>
-      <Styled.Title>Upload Your PDF</Styled.Title>
+      <Styled.Title>Upload Resume</Styled.Title>
       <Styled.Subtitle>
-        Drag and drop your PDF file or click to browse from your computer
+        Drag and drop your resume or click to browse from your computer
       </Styled.Subtitle>
       <FileUpload onFileSelect={handleFileSelect} />
     </Styled.HomeContainer>
