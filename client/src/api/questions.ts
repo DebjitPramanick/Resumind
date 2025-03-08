@@ -1,4 +1,3 @@
-import { QuestionDifficulty } from "@/constants";
 import Prompt from "@/prompt";
 import axios from "axios";
 
@@ -26,7 +25,7 @@ export const generateQuestions = async ({
   });
 
   const body = {
-    model: "deepseek/deepseek-r1:free",
+    model: "cognitivecomputations/dolphin3.0-r1-mistral-24b:free",
     messages: [
       {
         role: "user",
@@ -34,10 +33,19 @@ export const generateQuestions = async ({
       },
     ],
   };
+
+  const apiOptions = {
+    headers: {
+      ...options?.headers,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  };
+
   const response = await axios.post(
     `${API_URL}/v1/chat/completions`,
     body,
-    options
+    apiOptions
   );
   return response.data;
 };

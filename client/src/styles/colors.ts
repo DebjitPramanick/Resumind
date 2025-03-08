@@ -10,9 +10,9 @@ export const colors = {
     disabled: "#A0AEC0", // Lighter gray for disabled state
   },
   border: "#EDF2F7", // Very light gray with slight warmth
-  error: "#E53E3E", // Warmer red that matches the theme
-  success: "#38A169", // Softer green
-  warning: "#ED8936", // Warm orange for warnings
+  error: "#DC2626", // A softer but serious red
+  success: "#10B981", // A balanced, professional green
+  warning: "#F59E0B", // A muted amber
   utils: {
     overlay: "rgba(45, 55, 72, 0.3)", // For overlays and shadows
     shadow: {
