@@ -92,7 +92,7 @@ interface StepConnectorProps {
 export const StepConnector = styled.div<StepConnectorProps>`
   position: absolute;
   left: 16px;
-  top: 30px;
+  top: 32px;
   bottom: -24px;
   width: 2px;
   background: ${({ theme }) => theme.colors.border};

@@ -3,6 +3,7 @@ export const parseAIResponse = (response: string) => {
     // Remove triple backticks and potential "json" keyword
     const cleanedResponse = response.replace(/^```json|```$/g, "").trim();
 
+    console.log("Cleaned response", cleanedResponse);
     // Parse JSON string
     const jsonData = JSON.parse(cleanedResponse);
     return jsonData;

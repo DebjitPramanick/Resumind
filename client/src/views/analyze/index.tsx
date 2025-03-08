@@ -4,7 +4,7 @@ import { useAppContext } from "@/contexts";
 import * as Styled from "./index.styled";
 import { useParser, useRequestState } from "@/hooks";
 import { questionsApi } from "@/api";
-import { StepProgress, Step } from "@/components/molecules/StepProgress";
+import { StepProgress, Step } from "@/components/shared";
 import { useImmer } from "use-immer";
 import { parseAIResponse } from "@/utils";
 import { Questions } from "./components/Questions";
@@ -122,6 +122,8 @@ export const AnalyzeView = () => {
     const { choices } = generateQuestionsRequestStates.data;
     const jsonContent = choices[0].message.content;
     let questions = parseAIResponse(jsonContent);
+
+    console.log("Questions", questions);
 
     if (!Array.isArray(questions)) {
       questions = questions.questions;

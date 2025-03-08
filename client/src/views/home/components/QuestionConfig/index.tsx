@@ -23,7 +23,6 @@ export const QuestionConfig = ({
   onRoleChange,
   onQuestionCountChange,
 }: QuestionConfigProps) => {
-  const theme = useTheme();
   const isRoleValid = role.trim() !== "";
 
   return (
