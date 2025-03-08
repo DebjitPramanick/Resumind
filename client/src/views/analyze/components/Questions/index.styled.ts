@@ -1,3 +1,4 @@
+import { Button } from "@/components/atoms";
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
@@ -14,7 +15,7 @@ const fadeIn = keyframes`
 export const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${({ theme }) => theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.md};
   height: 100%;
   animation: ${fadeIn} 0.5s ease-out forwards;
 `;
@@ -104,4 +105,37 @@ export const AnswerText = styled.p`
   color: ${({ theme }) => theme.colors.text.secondary};
   margin: 0;
   white-space: pre-wrap;
+`;
+
+export const PDFHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+export const FileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.xs};
+`;
+
+export const FileName = styled.span`
+  ${({ theme }) => theme.typography.body1};
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-weight: 500;
+`;
+
+export const FileSize = styled.span`
+  ${({ theme }) => theme.typography.caption};
+  color: ${({ theme }) => theme.colors.text.secondary};
+`;
+
+export const UploadNewButton = styled(Button).attrs({
+  variant: "transparent",
+  size: "small",
+})`
+  margin-left: auto;
 `;

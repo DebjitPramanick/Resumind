@@ -11,10 +11,12 @@ const progressAnimation = keyframes`
 `;
 
 export const Container = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: ${({ theme }) => theme.spacing.lg};
-  max-width: 600px;
+  width: fit-content;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
 `;
@@ -90,7 +92,7 @@ interface StepConnectorProps {
 export const StepConnector = styled.div<StepConnectorProps>`
   position: absolute;
   left: 16px;
-  top: 40px;
+  top: 30px;
   bottom: -24px;
   width: 2px;
   background: ${({ theme }) => theme.colors.border};

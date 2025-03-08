@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import * as Styled from "./index.styled";
+import { PDFViewer } from "@/components/shared";
+import { Box, Button } from "@/components/atoms";
+import { Upload } from "react-feather";
+import { useRouter } from "next/router";
+import { useAppContext } from "@/contexts";
 
 interface Question {
   id: string;
@@ -18,36 +23,33 @@ export const Questions = ({
   pdfFile,
   isVisible,
 }: QuestionsProps) => {
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const { resetFileData } = useAppContext();
+  const router = useRouter();
 
-  useEffect(() => {
-    const loadPDF = async () => {
-      if (pdfFile.type === "application/pdf") {
-        const url = URL.createObjectURL(pdfFile);
-        setPdfUrl(`${url}#toolbar=0&view=FitH`);
-      } else {
-        alert("Please upload a valid PDF file.");
-      }
-    };
-
-    loadPDF();
-  }, [pdfFile]);
+  const handleUploadNew = () => {
+    router.push("/");
+    resetFileData();
+  };
 
   if (!isVisible) return null;
 
   return (
     <Styled.Container>
       <Styled.PDFSection>
-        <Styled.PDFViewer>
-          {pdfUrl && (
-            <iframe
-              src={pdfUrl}
-              width="100%"
-              height="100%"
-              style={{ border: "1px solid #ccc" }}
-            />
-          )}
-        </Styled.PDFViewer>
+        <Styled.PDFHeader>
+          <Styled.FileInfo>
+            <Styled.FileName>{pdfFile.name}</Styled.FileName>
+            <Styled.FileSize>
+              {(pdfFile.size / (1024 * 1024)).toFixed(2)} MB
+            </Styled.FileSize>
+          </Styled.FileInfo>
+          <Styled.UploadNewButton onClick={handleUploadNew}>
+            Upload New
+          </Styled.UploadNewButton>
+        </Styled.PDFHeader>
+        <Box height="calc(100% - 78px)">
+          <PDFViewer file={pdfFile} />
+        </Box>
       </Styled.PDFSection>
 
       <Styled.QuestionsSection>

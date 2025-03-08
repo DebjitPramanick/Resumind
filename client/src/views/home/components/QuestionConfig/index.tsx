@@ -1,16 +1,18 @@
 import { useTheme } from "styled-components";
 import { Button, Flex, Text } from "@/components/atoms";
-import { QUESTION_DIFFICULTY, QuestionDifficulty } from "@/constants";
+import {
+  QUESTION_DIFFICULTY_LEVELS,
+  QuestionDifficultyLevel,
+} from "@/constants";
 import * as Styled from "./index.styled";
 
 interface QuestionConfigProps {
-  difficulty: QuestionDifficulty;
+  difficulty: QuestionDifficultyLevel;
   role: string;
   questionCount: number;
-  onDifficultyChange: (difficulty: QuestionDifficulty) => void;
+  onDifficultyChange: (difficulty: QuestionDifficultyLevel) => void;
   onRoleChange: (role: string) => void;
   onQuestionCountChange: (count: number) => void;
-  onAnalyze: () => void;
 }
 
 export const QuestionConfig = ({
@@ -20,16 +22,30 @@ export const QuestionConfig = ({
   onDifficultyChange,
   onRoleChange,
   onQuestionCountChange,
-  onAnalyze,
 }: QuestionConfigProps) => {
   const theme = useTheme();
+  const isRoleValid = role.trim() !== "";
 
   return (
     <Styled.Container>
       <Styled.Section>
+        <Styled.SectionTitle>Target Role</Styled.SectionTitle>
+        <Styled.Input
+          type="text"
+          placeholder="e.g. Frontend Developer"
+          value={role}
+          onChange={(e) => onRoleChange(e.target.value)}
+          $hasError={!isRoleValid && role !== ""}
+        />
+        {!isRoleValid && role !== "" && (
+          <Styled.ErrorText>Please enter a valid role</Styled.ErrorText>
+        )}
+      </Styled.Section>
+
+      <Styled.Section>
         <Styled.SectionTitle>Question Difficulty</Styled.SectionTitle>
         <Styled.DifficultyToggle>
-          {Object.values(QUESTION_DIFFICULTY).map((level) => (
+          {Object.values(QUESTION_DIFFICULTY_LEVELS).map((level) => (
             <Styled.DifficultyButton
               key={level}
               active={difficulty === level}
@@ -40,16 +56,6 @@ export const QuestionConfig = ({
             </Styled.DifficultyButton>
           ))}
         </Styled.DifficultyToggle>
-      </Styled.Section>
-
-      <Styled.Section>
-        <Styled.SectionTitle>Target Role</Styled.SectionTitle>
-        <Styled.Input
-          type="text"
-          placeholder="e.g. Frontend Developer"
-          value={role}
-          onChange={(e) => onRoleChange(e.target.value)}
-        />
       </Styled.Section>
 
       <Styled.Section>
@@ -67,10 +73,6 @@ export const QuestionConfig = ({
           />
         </Styled.QuestionCountSlider>
       </Styled.Section>
-
-      <Button variant="filled" size="large" fullWidth onClick={onAnalyze}>
-        Generate Questions
-      </Button>
     </Styled.Container>
   );
 };

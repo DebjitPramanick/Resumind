@@ -128,3 +128,52 @@ export const CheckMark = styled(Check)`
   stroke-width: 3;
   animation: ${checkmarkAnimation} 0.3s ease-in-out forwards;
 `;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: ${({ theme }) => theme.spacing.md};
+  height: calc(100vh - 72px - 64px);
+  width: 100%;
+`;
+
+export const PDFSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  overflow: hidden;
+  height: 100%;
+`;
+
+export const PDFHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+export const PDFViewerContainer = styled.div`
+  flex: 1;
+  overflow: hidden;
+`;
+
+export const ConfigSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.xl};
+  height: 100%;
+  padding: ${({ theme }) => theme.spacing.xl};
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+export const ConfigTitle = styled.h2`
+  ${({ theme }) => theme.typography.h2};
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0;
+`;

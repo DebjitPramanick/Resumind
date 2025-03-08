@@ -1,7 +1,10 @@
-export type QuestionDifficulty = "easy" | "medium" | "hard";
+export type QuestionDifficultyLevel = "easy" | "moderate" | "hard";
 
-export const QUESTION_DIFFICULTY: Record<string, QuestionDifficulty> = {
+export const QUESTION_DIFFICULTY_LEVELS: Record<
+  string,
+  QuestionDifficultyLevel
+> = {
   EASY: "easy",
-  MEDIUM: "medium",
+  MODERATE: "moderate",
   HARD: "hard",
 };

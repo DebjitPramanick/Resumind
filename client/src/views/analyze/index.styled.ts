@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Box, Text, Flex, Spinner } from "@/components/atoms";
+import { Box, Text, Flex } from "@/components/atoms";
 import { AlertCircle } from "react-feather";
 
 export const AnalyzeContainer = styled(Box)`

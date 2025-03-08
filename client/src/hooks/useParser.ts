@@ -150,7 +150,6 @@ const useParser = (): UseParseReturn => {
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
-        console.log("textContent", textContent);
         const pageText = textContent.items
           .map((item: any) => {
             if ("str" in item && item.str) {

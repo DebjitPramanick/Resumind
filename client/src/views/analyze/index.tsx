@@ -91,16 +91,6 @@ export const AnalyzeView = () => {
     }
   }, [pageState.currentStep]);
 
-  const handleRetry = () => {
-    if (pdfFile) {
-      parse(pdfFile);
-    }
-  };
-
-  const handleUploadNew = () => {
-    router.push("/");
-  };
-
   const handleGenerateQuestions = async () => {
     try {
       generateQuestionsStatesHandler.pending();
@@ -108,6 +98,8 @@ export const AnalyzeView = () => {
       const payload = {
         role: "Frontend Developer",
         context,
+        questionCount: requirements.questionCount,
+        difficultyLevel: requirements.difficulty,
       };
       const resp = await questionsApi.generateQuestions({
         payload,
@@ -129,7 +121,11 @@ export const AnalyzeView = () => {
   if (pageState.isReadyToShowQuestions) {
     const { choices } = generateQuestionsRequestStates.data;
     const jsonContent = choices[0].message.content;
-    const questions = parseAIResponse(jsonContent);
+    let questions = parseAIResponse(jsonContent);
+
+    if (!Array.isArray(questions)) {
+      questions = questions.questions;
+    }
 
     nodeToRender = (
       <Questions

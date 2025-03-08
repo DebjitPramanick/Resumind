@@ -3,6 +3,8 @@ import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_API_URL;
 
+const model = "cognitivecomputations/dolphin3.0-r1-mistral-24b:free";
+
 export const generateQuestions = async ({
   payload,
   options,
@@ -11,21 +13,26 @@ export const generateQuestions = async ({
     role: string;
     context: string;
     questionCount?: number;
-    difficulty?: "easy" | "medium" | "hard";
+    difficultyLevel?: "easy" | "moderate" | "hard";
   };
   options?: any;
 }) => {
-  const { role, context, questionCount = 5, difficulty = "easy" } = payload;
+  const {
+    role,
+    context,
+    questionCount = 5,
+    difficultyLevel = "easy",
+  } = payload;
 
   const prompt = Prompt.generate({
     role,
     context,
     questionCount,
-    difficulty,
+    difficultyLevel,
   });
 
   const body = {
-    model: "cognitivecomputations/dolphin3.0-r1-mistral-24b:free",
+    model,
     messages: [
       {
         role: "user",

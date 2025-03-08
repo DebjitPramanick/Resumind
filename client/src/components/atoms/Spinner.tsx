@@ -28,7 +28,7 @@ const getSize = (size: SpinnerProps["size"] = "medium") => {
 const SpinnerWrapper = styled.div<SpinnerProps>`
   width: ${({ size }) => getSize(size)};
   height: ${({ size }) => getSize(size)};
-  border: 2px solid ${({ theme }) => theme.colors.surface};
+  border: 2px solid transparent;
   border-top: 2px solid ${({ theme, color }) => color || theme.colors.primary};
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;

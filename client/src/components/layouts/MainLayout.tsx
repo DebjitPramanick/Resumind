@@ -7,8 +7,6 @@ const LayoutContainer = styled.div`
 `;
 
 const MainContent = styled.main`
-  max-width: 1200px;
-  margin: 0 auto;
   padding: ${({ theme }) => `${theme.spacing.xl} ${theme.spacing.md}`};
   min-height: calc(100vh - 72px);
 `;

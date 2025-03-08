@@ -17,7 +17,6 @@ const StyledHeader = styled.header`
 const HeaderContainer = styled(Flex)`
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
   height: 100%;
   margin: 0 auto;
   padding: 0 ${({ theme }) => theme.spacing.md};

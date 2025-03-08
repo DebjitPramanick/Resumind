@@ -1,14 +1,17 @@
 import styled from "styled-components";
-import { QUESTION_DIFFICULTY, QuestionDifficulty } from "@/constants";
+import {
+  QUESTION_DIFFICULTY_LEVELS,
+  QuestionDifficultyLevel,
+} from "@/constants";
 import { Text } from "@/components/atoms";
 
-const getDifficultyColor = (difficulty: QuestionDifficulty) => {
+const getDifficultyColor = (difficulty: QuestionDifficultyLevel) => {
   switch (difficulty) {
-    case QUESTION_DIFFICULTY.EASY:
+    case QUESTION_DIFFICULTY_LEVELS.EASY:
       return "success";
-    case QUESTION_DIFFICULTY.MEDIUM:
+    case QUESTION_DIFFICULTY_LEVELS.MEDIUM:
       return "warning";
-    case QUESTION_DIFFICULTY.HARD:
+    case QUESTION_DIFFICULTY_LEVELS.HARD:
       return "error";
     default:
       return "primary";
@@ -37,7 +40,7 @@ export const DifficultyToggle = styled.div`
 
 interface DifficultyButtonProps {
   active: boolean;
-  difficulty: QuestionDifficulty;
+  difficulty: QuestionDifficultyLevel;
 }
 
 export const DifficultyButton = styled.button<DifficultyButtonProps>`
@@ -61,10 +64,16 @@ export const DifficultyButton = styled.button<DifficultyButtonProps>`
   }
 `;
 
-export const Input = styled.input`
+interface InputProps {
+  $hasError?: boolean;
+}
+
+export const Input = styled.input<InputProps>`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.md};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: 1px solid
+    ${({ theme, $hasError }) =>
+      $hasError ? theme.colors.error : theme.colors.border};
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.surface};
   color: ${({ theme }) => theme.colors.text.primary};
@@ -72,7 +81,8 @@ export const Input = styled.input`
 
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ theme, $hasError }) =>
+      $hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &::placeholder {
@@ -118,4 +128,11 @@ export const SectionTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.text.secondary};
   font-weight: 500;
   margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+export const ErrorText = styled.span`
+  ${({ theme }) => theme.typography.caption};
+  color: ${({ theme }) => theme.colors.error};
+  margin-top: ${({ theme }) => theme.spacing.xs};
+  display: block;
 `;
