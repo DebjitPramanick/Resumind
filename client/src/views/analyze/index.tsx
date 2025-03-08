@@ -24,6 +24,39 @@ export const AnalyzeView = () => {
     questions: [],
   });
 
+  const generateQuestions = async () => {
+    try {
+      generateQuestionsStatesHandler.pending();
+      const context = parserState.data?.text || "";
+      const payload = {
+        role: "Frontend Developer",
+        context,
+        questionCount: requirements.questionCount,
+        difficultyLevel: requirements.difficulty,
+      };
+      const resp = await questionsApi.generateQuestions({
+        payload,
+      });
+      generateQuestionsStatesHandler.fulfilled(resp);
+    } catch (error) {
+      generateQuestionsStatesHandler.rejected(error as Error);
+    }
+  };
+
+  const retryParsing = () => {
+    setPageState((draft) => {
+      draft.currentStep = 0;
+    });
+    parse(pdfFile as File);
+  };
+
+  const retryGeneratingQuestions = () => {
+    setPageState((draft) => {
+      draft.currentStep = 1;
+    });
+    generateQuestions();
+  };
+
   const steps: Step[] = [
     {
       title: "Parsing Resume",
@@ -33,6 +66,7 @@ export const AnalyzeView = () => {
         : parserState.isFulfilled
         ? "completed"
         : "pending",
+      onRetry: retryParsing,
     },
     {
       title: "Generating Questions",
@@ -44,6 +78,7 @@ export const AnalyzeView = () => {
         : generateQuestionsRequestStates.isFulfilled
         ? "completed"
         : "pending",
+      onRetry: retryGeneratingQuestions,
     },
     {
       title: "Ready",
@@ -57,8 +92,10 @@ export const AnalyzeView = () => {
   useEffect(() => {
     if (pdfFile) {
       parse(pdfFile);
+    } else {
+      router.push("/");
     }
-  }, [pdfFile, parse]);
+  }, [pdfFile]);
 
   useEffect(() => {
     if (parserState.isFulfilled) {
@@ -66,7 +103,7 @@ export const AnalyzeView = () => {
         setPageState((draft) => {
           draft.currentStep = 1;
         });
-        handleGenerateQuestions();
+        generateQuestions();
       }, STEP_CHANGE_DELAY);
     }
   }, [parserState.isFulfilled]);
@@ -91,31 +128,6 @@ export const AnalyzeView = () => {
     }
   }, [pageState.currentStep]);
 
-  const handleGenerateQuestions = async () => {
-    try {
-      generateQuestionsStatesHandler.pending();
-      const context = parserState.data?.text || "";
-      const payload = {
-        role: "Frontend Developer",
-        context,
-        questionCount: requirements.questionCount,
-        difficultyLevel: requirements.difficulty,
-      };
-      const resp = await questionsApi.generateQuestions({
-        payload,
-      });
-      generateQuestionsStatesHandler.fulfilled(resp);
-    } catch (error) {
-      generateQuestionsStatesHandler.rejected(error as Error);
-    }
-  };
-
-  useEffect(() => {
-    if (!pdfFile) {
-      router.push("/");
-    }
-  }, [pdfFile]);
-
   let nodeToRender;
 
   if (pageState.isReadyToShowQuestions) {
@@ -125,8 +137,10 @@ export const AnalyzeView = () => {
 
     console.log("Questions", questions);
 
-    if (!Array.isArray(questions)) {
+    if (questions && !Array.isArray(questions)) {
       questions = questions.questions;
+    } else if (!questions) {
+      questions = [];
     }
 
     nodeToRender = (

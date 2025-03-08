@@ -1,12 +1,12 @@
 import styled, { css, keyframes } from "styled-components";
-import { Spinner } from "@/components/atoms";
+import { Button } from "@/components/atoms";
 
 const progressAnimation = keyframes`
   from {
-    width: 0%;
+    height: 0%;
   }
   to {
-    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -15,7 +15,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.xxl};
   width: fit-content;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
@@ -32,36 +32,47 @@ export const StepContent = styled.div`
 `;
 
 interface StepProps {
-  status: "pending" | "active" | "completed";
+  status: "pending" | "active" | "completed" | "error";
 }
 
 export const StepNumber = styled.div<StepProps>`
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  transition: all 0.3s ease-in-out;
-  background: ${({ theme, status }) =>
-    status === "completed"
-      ? theme.colors.success
-      : status === "active"
-      ? theme.colors.primary
-      : theme.colors.surface};
+  background: ${({ theme, status }) => {
+    switch (status) {
+      case "active":
+        return theme.colors.primary;
+      case "completed":
+        return theme.colors.success;
+      case "error":
+        return theme.colors.error;
+      default:
+        return theme.colors.surface;
+    }
+  }};
+  border: 2px solid
+    ${({ theme, status }) => {
+      switch (status) {
+        case "active":
+          return theme.colors.primary;
+        case "completed":
+          return theme.colors.success;
+        case "error":
+          return theme.colors.error;
+        default:
+          return theme.colors.border;
+      }
+    }};
   color: ${({ theme, status }) =>
     status === "pending"
       ? theme.colors.text.secondary
       : theme.colors.text.primary};
-  border: 2px solid
-    ${({ theme, status }) =>
-      status === "pending" ? theme.colors.border : "transparent"};
-
-  svg {
-    animation: ${({ status }) =>
-      status === "active" ? "spin 1s linear infinite" : "none"};
-  }
+  ${({ theme }) => theme.typography.h3};
+  flex-shrink: 0;
 `;
 
 export const StepText = styled.div`
@@ -87,32 +98,53 @@ export const StepDescription = styled.p`
 interface StepConnectorProps {
   $isActive: boolean;
   $isAnimating: boolean;
+  $hasError?: boolean;
 }
 
 export const StepConnector = styled.div<StepConnectorProps>`
   position: absolute;
-  left: 16px;
-  top: 32px;
-  bottom: -24px;
+  left: 24px;
+  top: 48px;
+  bottom: -48px;
   width: 2px;
-  background: ${({ theme }) => theme.colors.border};
+  background: ${({ theme, $hasError }) =>
+    $hasError ? theme.colors.error : theme.colors.border};
 
   &::after {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
+    height: ${({ $isActive, $isAnimating }) =>
+      $isActive && !$isAnimating ? "100%" : "0%"};
     width: 100%;
-    height: 100%;
     background: ${({ theme }) => theme.colors.primary};
     transform-origin: top;
-    transform: scaleY(${({ $isActive }) => ($isActive ? 1 : 0)});
-    transition: transform 1s ease-in-out;
+    transition: height 1s ease-in-out;
     animation: ${({ $isAnimating }) =>
       $isAnimating
         ? css`
             ${progressAnimation} 1s ease-in-out forwards
           `
         : "none"};
+  }
+`;
+
+export const StepError = styled.span`
+  ${({ theme }) => theme.typography.caption};
+  color: ${({ theme }) => theme.colors.error};
+  margin-top: ${({ theme }) => theme.spacing.xs};
+  display: block;
+`;
+
+export const RetryButton = styled(Button)`
+  margin-top: ${({ theme }) => theme.spacing.sm};
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 0;
+
+  &:hover {
+    background: none;
+    color: ${({ theme }) => theme.colors.primary};
+    opacity: 0.8;
   }
 `;
