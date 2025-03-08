@@ -1,7 +1,7 @@
 import Prompt from "@/prompt";
 import axios from "axios";
 
-const API_URL = process.env.DEEPSEEK_BASE_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_API_URL;
 
 export const generateQuestions = async ({
   payload,
@@ -37,7 +37,7 @@ export const generateQuestions = async ({
   const apiOptions = {
     headers: {
       ...options?.headers,
-      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
       "Content-Type": "application/json",
     },
   };
