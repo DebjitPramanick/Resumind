@@ -2,13 +2,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppContext } from "@/contexts";
 import * as Styled from "./index.styled";
-import { useParser } from "@/hooks";
+import { useParser, useRequestState } from "@/hooks";
 import { Spinner, Text, Button } from "@/components/atoms";
+import { questionsApi } from "@/api";
 
 export const AnalyzeView = () => {
   const router = useRouter();
   const { file: pdfFile } = useAppContext();
   const { parse, state: parserState } = useParser();
+  const [generateQuestionsRequestStates, generateQuestionsStatesHandler] =
+    useRequestState();
 
   useEffect(() => {
     if (pdfFile) {
@@ -24,6 +27,23 @@ export const AnalyzeView = () => {
 
   const handleUploadNew = () => {
     router.push("/");
+  };
+
+  const handleGenerateQuestions = async () => {
+    try {
+      generateQuestionsStatesHandler.pending();
+      const context = parserState.data?.text || "";
+      const payload = {
+        role: "Frontend Developer",
+        context,
+      };
+      const resp = await questionsApi.generateQuestions({
+        payload,
+      });
+      generateQuestionsStatesHandler.fulfilled(resp);
+    } catch (error) {
+      generateQuestionsStatesHandler.rejected(error as Error);
+    }
   };
 
   if (!pdfFile) {

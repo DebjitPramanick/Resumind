@@ -172,8 +172,6 @@ const useParser = (): UseParseReturn => {
 
       const lines = fullText.split("\n");
 
-      console.log("fullText", fullText, lines);
-
       let currentSection: string | undefined;
 
       lines.forEach((line) => {
@@ -194,10 +192,12 @@ const useParser = (): UseParseReturn => {
         }
       });
 
-      console.log(sections);
+      const context = Object.entries(sections)
+        .map(([_, value]) => value)
+        .join("\n\n");
 
       const result: ParseResult = {
-        text: fullText,
+        text: context,
         sections,
         metadata: {
           pageCount: pdf.numPages,
