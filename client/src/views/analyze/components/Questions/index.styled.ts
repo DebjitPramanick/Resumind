@@ -54,6 +54,7 @@ export const QuestionsHeader = styled.div`
   justify-content: space-between;
   padding-bottom: ${({ theme }) => theme.spacing.md};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 12px 12px 0 0;
 `;
 
 export const Title = styled.h2`

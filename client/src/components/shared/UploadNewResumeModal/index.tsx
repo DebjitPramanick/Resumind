@@ -91,8 +91,7 @@ export const UploadNewResumeModal = ({
     handleSetDifficulty(modalState.requirements.difficulty);
     handleSetQuestionCount(modalState.requirements.questionCount);
     handleSetRole(modalState.requirements.role);
-
-    onClose();
+    onComplete();
   };
 
   const steps = [

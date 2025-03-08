@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Styled from "./index.styled";
 import { PDFViewer } from "@/components/shared";
-import { Box, Button } from "@/components/atoms";
-import { Upload } from "react-feather";
-import { useRouter } from "next/router";
-import { useAppContext } from "@/contexts";
+import { Box } from "@/components/atoms";
 import { UploadNewResumeModal } from "@/components/shared/UploadNewResumeModal";
 
 interface Question {
@@ -17,15 +14,15 @@ interface QuestionsProps {
   questions: Question[];
   pdfFile: File;
   isVisible: boolean;
+  onReset: () => void;
 }
 
 export const Questions = ({
   questions,
   pdfFile,
   isVisible,
+  onReset,
 }: QuestionsProps) => {
-  const { resetFileData } = useAppContext();
-  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleUploadNew = () => {
@@ -37,8 +34,8 @@ export const Questions = ({
   };
 
   const handleModalComplete = () => {
+    onReset();
     setIsModalOpen(false);
-    router.push("/analyze");
   };
 
   if (!isVisible) return null;

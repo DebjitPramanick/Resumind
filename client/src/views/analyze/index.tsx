@@ -57,6 +57,14 @@ export const AnalyzeView = () => {
     generateQuestions();
   };
 
+  const handleResetPageState = () => {
+    setPageState((draft) => {
+      draft.currentStep = 0;
+      draft.isReadyToShowQuestions = false;
+      draft.questions = [];
+    });
+  };
+
   const steps: Step[] = [
     {
       title: "Parsing Resume",
@@ -130,6 +138,8 @@ export const AnalyzeView = () => {
 
   let nodeToRender;
 
+  console.log("Page State", pageState);
+
   if (pageState.isReadyToShowQuestions) {
     const { choices } = generateQuestionsRequestStates.data;
     const jsonContent = choices[0].message.content;
@@ -148,6 +158,7 @@ export const AnalyzeView = () => {
         questions={questions}
         pdfFile={pdfFile as File}
         isVisible={pageState.isReadyToShowQuestions}
+        onReset={handleResetPageState}
       />
     );
   } else {
