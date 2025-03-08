@@ -1,26 +1,8 @@
 import { QuestionDifficulty } from "@/constants";
+import Prompt from "@/prompt";
 import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_API_URL;
-
-const _generatePrompt = ({
-  role,
-  context,
-  questionCount,
-  difficulty,
-}: {
-  role: string;
-  context: string;
-  questionCount: number;
-  difficulty: QuestionDifficulty;
-}) => {
-  const task = `Generate ${questionCount} interview questions with ${difficulty} difficulty and short answers, to interview a candidate for the role of ${role}.`;
-  const instructions = `Analyze the candidate based on his education, experience, skills and projects which are provide below: \n ${context}. \n The questions should be unique.`;
-  const format =
-    "Return the questions in JSON format with the following structure: \n { question: string, answer: string }";
-
-  return `${task}\n${instructions}\n${format}`;
-};
 
 export const generateQuestions = async ({
   payload,
@@ -36,7 +18,7 @@ export const generateQuestions = async ({
 }) => {
   const { role, context, questionCount = 5, difficulty = "easy" } = payload;
 
-  const prompt = _generatePrompt({
+  const prompt = Prompt.generate({
     role,
     context,
     questionCount,

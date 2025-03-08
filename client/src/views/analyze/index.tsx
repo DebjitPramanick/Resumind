@@ -8,7 +8,7 @@ import { questionsApi } from "@/api";
 
 export const AnalyzeView = () => {
   const router = useRouter();
-  const { file: pdfFile } = useAppContext();
+  const { file: pdfFile, requirements } = useAppContext();
   const { parse, state: parserState } = useParser();
   const [generateQuestionsRequestStates, generateQuestionsStatesHandler] =
     useRequestState();

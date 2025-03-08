@@ -4,11 +4,19 @@ import { FileUpload } from "./components/FileUpload";
 import { useAppContext } from "@/contexts";
 import * as Styled from "./index.styled";
 import { useTheme } from "styled-components";
+import { QuestionConfig } from "./components/QuestionConfig";
 
 export const HomeView = () => {
   const router = useRouter();
   const theme = useTheme();
-  const { file, setFile } = useAppContext();
+  const {
+    file,
+    setFile,
+    requirements,
+    handleSetDifficulty,
+    handleSetQuestionCount,
+    handleSetRole,
+  } = useAppContext();
 
   const handleFileSelect = async (file: File) => {
     setFile(file);
@@ -37,11 +45,7 @@ export const HomeView = () => {
   } else {
     nodeToRender = (
       <>
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          mb={theme.spacing.xxl}
-        >
+        <Flex alignItems="center" justifyContent="center" mb={theme.spacing.lg}>
           <Styled.SuccessIcon>
             <Styled.CheckMark />
           </Styled.SuccessIcon>
@@ -62,16 +66,15 @@ export const HomeView = () => {
               Remove
             </Styled.RemoveButton>
           </Styled.SelectedFile>
-          <Styled.ActionButtons>
-            <Button
-              variant="filled"
-              size="large"
-              fullWidth
-              onClick={handleAnalyze}
-            >
-              Analyze Resume
-            </Button>
-          </Styled.ActionButtons>
+          <QuestionConfig
+            difficulty={requirements.difficulty}
+            role={requirements.role}
+            questionCount={requirements.questionCount}
+            onDifficultyChange={handleSetDifficulty}
+            onRoleChange={handleSetRole}
+            onQuestionCountChange={handleSetQuestionCount}
+            onAnalyze={handleAnalyze}
+          />
         </Styled.FileSection>
       </>
     );
