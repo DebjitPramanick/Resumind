@@ -1,71 +1,86 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
-import { Box } from "@/components/atoms";
 import { useAppContext } from "@/contexts";
-
-const AnalyzeContainer = styled(Box)`
-  max-width: 800px;
-  margin: 0 auto;
-`;
-
-const Title = styled.h1`
-  ${({ theme }) => theme.typography.h1};
-  color: ${({ theme }) => theme.colors.text.primary};
-  text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-`;
-
-const Section = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-`;
-
-const SectionTitle = styled.h2`
-  ${({ theme }) => theme.typography.h2};
-  color: ${({ theme }) => theme.colors.text.primary};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-`;
-
-const SectionContent = styled.div`
-  ${({ theme }) => theme.typography.body1};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  white-space: pre-line;
-  padding: ${({ theme }) => theme.spacing.lg};
-  background: ${({ theme }) => theme.colors.surface};
-  border-radius: 8px;
-  box-shadow: ${({ theme }) => theme.colors.utils.shadow.sm};
-`;
+import * as Styled from "./index.styled";
+import { useParser } from "@/hooks";
+import { Spinner, Text, Button } from "@/components/atoms";
 
 export const AnalyzeView = () => {
   const router = useRouter();
-  const { pdfData } = useAppContext();
+  const { file: pdfFile } = useAppContext();
+  const { parse, state: parserState } = useParser();
 
   useEffect(() => {
-    if (!pdfData) {
-      router.push("/");
+    if (pdfFile) {
+      parse(pdfFile);
     }
-  }, [pdfData, router]);
+  }, [pdfFile, parse]);
 
-  if (!pdfData) {
+  const handleRetry = () => {
+    if (pdfFile) {
+      parse(pdfFile);
+    }
+  };
+
+  const handleUploadNew = () => {
+    router.push("/");
+  };
+
+  if (!pdfFile) {
     return null;
   }
 
-  return (
-    <AnalyzeContainer>
-      <Title>Resume Analysis</Title>
+  let nodeToRender;
 
-      {Object.entries(pdfData.sections).map(([key, content]) => {
-        if (!content.trim()) return null;
+  if (parserState.isPending) {
+    nodeToRender = (
+      <Styled.LoadingContainer>
+        <Spinner size="large" />
+        <Text>Analyzing your resume...</Text>
+      </Styled.LoadingContainer>
+    );
+  }
 
-        return (
-          <Section key={key}>
-            <SectionTitle>
-              {key.charAt(0).toUpperCase() + key.slice(1)}
-            </SectionTitle>
-            <SectionContent>{content}</SectionContent>
-          </Section>
-        );
-      })}
-    </AnalyzeContainer>
-  );
+  if (parserState.isFulfilled && parserState.data) {
+    nodeToRender = (
+      <>
+        <Styled.Title>Resume Analysis</Styled.Title>
+        {Object.entries(parserState.data.sections).map(([key, content]) => {
+          if (!content.trim()) return null;
+
+          return (
+            <Styled.Section key={key}>
+              <Styled.SectionTitle>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </Styled.SectionTitle>
+              <Styled.SectionContent>{content}</Styled.SectionContent>
+            </Styled.Section>
+          );
+        })}
+      </>
+    );
+  }
+
+  if (parserState.isRejected) {
+    nodeToRender = (
+      <Styled.ErrorContainer>
+        <Styled.ErrorIcon />
+        <Styled.ErrorTitle>Analysis Failed</Styled.ErrorTitle>
+        <Styled.ErrorMessage>
+          We encountered an error while analyzing your resume. Please try again
+          or upload a different file.
+        </Styled.ErrorMessage>
+        <Styled.ErrorActions>
+          <Button variant="outlined" onClick={handleRetry}>
+            Try Again
+          </Button>
+          <Button variant="filled" onClick={handleUploadNew}>
+            Upload New File
+          </Button>
+        </Styled.ErrorActions>
+      </Styled.ErrorContainer>
+    );
+  }
+
+  return <Styled.AnalyzeContainer>{nodeToRender}</Styled.AnalyzeContainer>;
 };

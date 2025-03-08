@@ -1,1 +1,1 @@
-export { default as useParse } from "./useParse";
+export { default as useParser } from "./useParser";

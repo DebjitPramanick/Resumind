@@ -19,7 +19,8 @@
     "react-dropzone": "^14.3.8",
     "react-feather": "^2.0.10",
     "styled-components": "^6.1.15",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "use-immer": "^0.11.0"
   },
   "devDependencies": {
     "@types/node": "^20",
