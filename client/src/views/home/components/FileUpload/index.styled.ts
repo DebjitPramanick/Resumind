@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Upload } from "react-feather";
-import { Box, Flex } from "@/components/atoms";
+import { Flex, Text } from "@/components/atoms";
 import type { FlexProps } from "@/components/atoms/Flex";
 
 interface UploadSectionProps extends FlexProps {
@@ -43,19 +43,19 @@ export const UploadIcon = styled(Upload)<UploadIconProps>`
   margin-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
-export const UploadText = styled.p`
+export const UploadText = styled(Text)`
   ${({ theme }) => theme.typography.body1};
   color: ${({ theme }) => theme.colors.text.secondary};
   margin-bottom: ${({ theme }) => theme.spacing.md};
   text-align: center;
 `;
 
-export const SupportedFormats = styled.p`
+export const SupportedFormats = styled(Text)`
   ${({ theme }) => theme.typography.caption};
   color: ${({ theme }) => theme.colors.text.disabled};
 `;
 
-export const ErrorText = styled.p`
+export const ErrorText = styled(Text)`
   ${({ theme }) => theme.typography.caption};
   color: ${({ theme }) => theme.colors.error};
 `;

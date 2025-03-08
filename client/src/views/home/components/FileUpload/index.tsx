@@ -41,8 +41,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
   return (
     <Styled.UploadSection
       {...getRootProps()}
-      p="xl"
-      gap="md"
+      p={theme.spacing.xl}
       bg={
         isError
           ? `${theme.colors.error}10`
@@ -59,14 +58,20 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
       }
     >
       <input {...getInputProps()} />
-      <Flex direction="column" align="center" justify="center">
+      <Flex
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
+        height="100%"
+      >
         <Styled.UploadIcon error={isError} />
         <Styled.UploadText>
           {isError
             ? "Please upload a PDF file"
             : "Drag and drop your PDF file here"}
         </Styled.UploadText>
-        <Box mb="md">
+        <Box mb={theme.spacing.md}>
           <Button as="label" variant="outlined" size="large">
             Choose File
           </Button>
