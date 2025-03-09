@@ -8,11 +8,21 @@ import { StepProgress, Step } from "@/components/shared";
 import { useImmer } from "use-immer";
 import { parseAIResponse } from "@/utils";
 import { Questions } from "./components/Questions";
+import { Box, Flex, Spinner } from "@/components/atoms";
+import { UploadNewResumeModal } from "@/components/shared/UploadNewResumeModal";
+import PDFViewSection from "./components/PDFViewSection";
+import { ChevronDown } from "react-feather";
+import { Collapse } from "@/components/molecules";
+import { QuestionConfig } from "./components/QuestionConfig";
+import { ErrorView } from "./components/ErrorView";
+import { useTheme } from "styled-components";
+import { LoadingView } from "./components/LoadingView";
 
 const STEP_CHANGE_DELAY = 1000;
 
 export const AnalyzeView = () => {
   const router = useRouter();
+  const theme = useTheme();
   const { file: pdfFile, requirements } = useAppContext();
   const { parse, state: parserState } = useParser();
   const [generateQuestionsRequestStates, generateQuestionsStatesHandler] =
@@ -22,6 +32,9 @@ export const AnalyzeView = () => {
     currentStep: 0,
     isReadyToShowQuestions: false,
     questions: [],
+    isUploadModalOpen: false,
+    isConfigExpanded: false,
+    isQuestionsExpanded: true,
   });
 
   const generateQuestions = async () => {
@@ -29,7 +42,7 @@ export const AnalyzeView = () => {
       generateQuestionsStatesHandler.pending();
       const context = parserState.data?.text || "";
       const payload = {
-        role: "Frontend Developer",
+        role: requirements.role,
         context,
         questionCount: requirements.questionCount,
         difficultyLevel: requirements.difficulty,
@@ -57,11 +70,44 @@ export const AnalyzeView = () => {
     generateQuestions();
   };
 
-  const handleResetPageState = () => {
+  const handleUploadModalOpen = () => {
+    setPageState((draft) => {
+      draft.isUploadModalOpen = true;
+    });
+  };
+
+  const handleRegenerateQuestions = () => {
+    setPageState((draft) => {
+      draft.isConfigExpanded = false;
+    });
+    generateQuestions();
+  };
+
+  const handleUploadModalClose = () => {
+    setPageState((draft) => {
+      draft.isUploadModalOpen = false;
+    });
+  };
+
+  const handleUploadModalComplete = () => {
     setPageState((draft) => {
       draft.currentStep = 0;
       draft.isReadyToShowQuestions = false;
       draft.questions = [];
+      draft.isUploadModalOpen = false;
+    });
+    parse(pdfFile as File);
+  };
+
+  const handleToggleConfig = () => {
+    setPageState((draft) => {
+      draft.isConfigExpanded = !draft.isConfigExpanded;
+    });
+  };
+
+  const handleToggleQuestions = () => {
+    setPageState((draft) => {
+      draft.isQuestionsExpanded = !draft.isQuestionsExpanded;
     });
   };
 
@@ -138,28 +184,79 @@ export const AnalyzeView = () => {
 
   let nodeToRender;
 
-  console.log("Page State", pageState);
-
   if (pageState.isReadyToShowQuestions) {
-    const { choices } = generateQuestionsRequestStates.data;
-    const jsonContent = choices[0].message.content;
-    let questions = parseAIResponse(jsonContent);
+    let questionsNode;
 
-    console.log("Questions", questions);
+    if (generateQuestionsRequestStates.isPending) {
+      questionsNode = (
+        <LoadingView
+          title="Generating Questions"
+          message="Please wait while we analyze your resume and create tailored interview questions..."
+        />
+      );
+    } else if (generateQuestionsRequestStates.isFulfilled) {
+      const { choices } = generateQuestionsRequestStates.data;
+      const jsonContent = choices[0].message.content;
+      let questions = parseAIResponse(jsonContent);
 
-    if (questions && !Array.isArray(questions)) {
-      questions = questions.questions;
-    } else if (!questions) {
-      questions = [];
+      if (questions && !Array.isArray(questions)) {
+        questions = questions.questions;
+      } else if (!questions) {
+        questions = [];
+      }
+      questionsNode = (
+        <Collapse transitionIn={pageState.isQuestionsExpanded} duration={300}>
+          <Questions questions={questions} />
+        </Collapse>
+      );
+    } else if (generateQuestionsRequestStates.isRejected) {
+      const errorMessage = "Failed to generate questions. Please try again.";
+      questionsNode = (
+        <ErrorView
+          title="Error Generating Questions"
+          message={errorMessage}
+          onRetry={handleRegenerateQuestions}
+        />
+      );
     }
 
     nodeToRender = (
-      <Questions
-        questions={questions}
-        pdfFile={pdfFile as File}
-        isVisible={pageState.isReadyToShowQuestions}
-        onReset={handleResetPageState}
-      />
+      <Styled.ResultContainer>
+        <PDFViewSection
+          pdfFile={pdfFile as File}
+          onUploadNew={handleUploadModalOpen}
+        />
+        <Box style={{ height: "100%", overflowY: "auto" }}>
+          <Styled.SectionHeader onClick={handleToggleConfig}>
+            <Styled.SectionTitle>Question Config</Styled.SectionTitle>
+            {generateQuestionsRequestStates.isPending ? null : (
+              <Styled.ExpandButton $isExpanded={pageState.isConfigExpanded}>
+                <ChevronDown size={20} />
+              </Styled.ExpandButton>
+            )}
+          </Styled.SectionHeader>
+          <Collapse transitionIn={pageState.isConfigExpanded} duration={300}>
+            <QuestionConfig
+              difficulty={requirements.difficulty}
+              role={requirements.role}
+              questionCount={requirements.questionCount}
+              onRegenerate={handleRegenerateQuestions}
+            />
+          </Collapse>
+          <Styled.SectionHeader
+            onClick={handleToggleQuestions}
+            style={{
+              marginTop: theme.spacing.md,
+            }}
+          >
+            <Styled.SectionTitle>Interview Questions</Styled.SectionTitle>
+            <Styled.ExpandButton $isExpanded={pageState.isQuestionsExpanded}>
+              <ChevronDown size={20} />
+            </Styled.ExpandButton>
+          </Styled.SectionHeader>
+          {questionsNode}
+        </Box>
+      </Styled.ResultContainer>
     );
   } else {
     nodeToRender = (
@@ -167,5 +264,14 @@ export const AnalyzeView = () => {
     );
   }
 
-  return <Styled.AnalyzeContainer>{nodeToRender}</Styled.AnalyzeContainer>;
+  return (
+    <>
+      <Styled.AnalyzeContainer>{nodeToRender}</Styled.AnalyzeContainer>
+      <UploadNewResumeModal
+        isOpen={pageState.isUploadModalOpen}
+        onClose={handleUploadModalClose}
+        onComplete={handleUploadModalComplete}
+      />
+    </>
+  );
 };

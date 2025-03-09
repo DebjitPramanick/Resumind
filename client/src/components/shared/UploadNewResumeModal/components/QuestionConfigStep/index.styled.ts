@@ -84,6 +84,7 @@ export const DifficultyButton = styled.button<DifficultyButtonProps>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   border-radius: 6px;
   border: none;
+  text-transform: capitalize;
   background: ${({ theme, active, difficulty }) =>
     active
       ? `${theme.colors[getDifficultyColor(difficulty)]}10`
