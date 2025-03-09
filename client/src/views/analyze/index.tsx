@@ -17,6 +17,7 @@ import { QuestionConfig } from "./components/QuestionConfig";
 import { ErrorView } from "./components/ErrorView";
 import { useTheme } from "styled-components";
 import { LoadingView } from "./components/LoadingView";
+import Prompt from "@/prompt";
 
 const STEP_CHANGE_DELAY = 1000;
 
@@ -220,6 +221,13 @@ export const AnalyzeView = () => {
       );
     }
 
+    const prompt = Prompt.generate({
+      role: requirements.role,
+      context: parserState.data?.text || "",
+      questionCount: requirements.questionCount,
+      difficultyLevel: requirements.difficulty,
+    });
+
     nodeToRender = (
       <Styled.ResultContainer>
         <PDFViewSection
@@ -241,6 +249,7 @@ export const AnalyzeView = () => {
               role={requirements.role}
               questionCount={requirements.questionCount}
               onRegenerate={handleRegenerateQuestions}
+              prompt={prompt}
             />
           </Collapse>
           <Styled.SectionHeader

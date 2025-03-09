@@ -18,8 +18,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing.xxl};
-  background: ${({ theme }) => `${theme.colors.primary}05`};
-  border: 1px solid ${({ theme }) => `${theme.colors.primary}10`};
   border-radius: 12px;
   animation: ${fadeIn} 0.3s ease-out forwards;
 `;

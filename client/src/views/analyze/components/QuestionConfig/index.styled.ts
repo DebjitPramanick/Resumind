@@ -108,3 +108,103 @@ export const DifficultyButton = styled.button<DifficultyButtonProps>`
 export const RegenerateButton = styled(Button)`
   margin-top: ${({ theme }) => theme.spacing.sm};
 `;
+
+export const PromptSection = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.md};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+export const PromptHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.sm};
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surface};
+  }
+`;
+
+export const PromptTitle = styled.span`
+  ${({ theme }) => theme.typography.caption};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-weight: 500;
+`;
+
+export const PromptContent = styled.div<{ $isVisible: boolean }>`
+  padding: ${({ theme, $isVisible }) => ($isVisible ? theme.spacing.sm : 0)};
+  height: ${({ $isVisible }) => ($isVisible ? "auto" : 0)};
+  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+  overflow: hidden;
+  transition: all 0.2s ease;
+  background: ${({ theme }) => theme.colors.surface};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const PromptText = styled.pre`
+  ${({ theme }) => theme.typography.caption};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
+
+export const CopyButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+  border: none;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => theme.typography.caption};
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary}10;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+interface ExpandButtonProps {
+  $isExpanded: boolean;
+}
+
+export const ExpandButton = styled.div<ExpandButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  transition: transform 0.2s ease;
+  transform: rotate(${({ $isExpanded }) => ($isExpanded ? "-180deg" : "0deg")});
+`;
+
+export const PreviewButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => theme.typography.body2};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceAlt};
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
