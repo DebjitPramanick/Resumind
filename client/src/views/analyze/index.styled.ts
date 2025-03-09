@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { Box, Text, Flex } from "@/components/atoms";
 import { AlertCircle } from "react-feather";
+import { mediaQueryMobileOrTablet } from "@/styles/mixins";
 
 const fadeIn = keyframes`
   from {
@@ -16,6 +17,10 @@ const fadeIn = keyframes`
 export const AnalyzeContainer = styled(Box)`
   margin: 0 auto;
   height: calc(100vh - 72px - 32px);
+
+  ${mediaQueryMobileOrTablet} {
+    height: auto;
+  }
 `;
 
 export const ResultContainer = styled(Box)`
@@ -24,6 +29,11 @@ export const ResultContainer = styled(Box)`
   gap: ${({ theme }) => theme.spacing.md};
   height: 100%;
   animation: ${fadeIn} 0.5s ease-out forwards;
+
+  ${mediaQueryMobileOrTablet} {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 `;
 
 export const Title = styled(Text)`

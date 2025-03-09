@@ -22,9 +22,9 @@ const PDFViewSection = ({
           Upload New
         </Styled.UploadNewButton>
       </Styled.PDFHeader>
-      <Box height="calc(100% - 78px)">
+      <Styled.PDFViewerContainer>
         <PDFViewer file={pdfFile} />
-      </Box>
+      </Styled.PDFViewerContainer>
     </Styled.PDFSection>
   );
 };

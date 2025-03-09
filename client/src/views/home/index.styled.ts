@@ -1,10 +1,15 @@
-import { Box, Button, Text } from "@/components/atoms";
+import { Box, Button, Flex, Text } from "@/components/atoms";
 import styled, { keyframes } from "styled-components";
 import { File, Check } from "react-feather";
+import { mediaQueryMobileOrTablet } from "@/styles/mixins";
 
-export const HomeContainer = styled(Box)`
+export const HomeContainer = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   max-width: 800px;
   margin: 0 auto;
+  min-height: calc(100vh - 72px - 32px);
 `;
 
 export const Title = styled(Text)`
@@ -133,8 +138,13 @@ export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: ${({ theme }) => theme.spacing.md};
-  height: calc(100vh - 72px - 32px);
+  min-height: calc(100vh - 72px - 32px);
   width: 100%;
+
+  ${mediaQueryMobileOrTablet} {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 `;
 
 export const PDFSection = styled.div`
@@ -145,6 +155,10 @@ export const PDFSection = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   overflow: hidden;
   height: 100%;
+
+  ${mediaQueryMobileOrTablet} {
+    height: 600px;
+  }
 `;
 
 export const PDFHeader = styled.div`
@@ -166,7 +180,7 @@ export const ConfigSection = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xl};
   height: 100%;
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.surface};
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.colors.border};

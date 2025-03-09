@@ -4,7 +4,7 @@ import { useAppContext } from "@/contexts";
 import * as Styled from "./index.styled";
 import { useParser, useRequestState } from "@/hooks";
 import { questionsApi } from "@/api";
-import { StepProgress, Step } from "@/components/shared";
+import { StepProgress, Step, PromptPreviewModal } from "@/components/shared";
 import { useImmer } from "use-immer";
 import { parseAIResponse } from "@/utils";
 import { Questions } from "./components/Questions";
@@ -36,6 +36,7 @@ export const AnalyzeView = () => {
     isUploadModalOpen: false,
     isConfigExpanded: false,
     isQuestionsExpanded: true,
+    isPromptModalOpen: false,
   });
 
   const generateQuestions = async () => {
@@ -101,16 +102,41 @@ export const AnalyzeView = () => {
   };
 
   const handleToggleConfig = () => {
+    if (generateQuestionsRequestStates.isPending) {
+      return;
+    }
     setPageState((draft) => {
       draft.isConfigExpanded = !draft.isConfigExpanded;
     });
   };
 
   const handleToggleQuestions = () => {
+    if (generateQuestionsRequestStates.isPending) {
+      return;
+    }
     setPageState((draft) => {
       draft.isQuestionsExpanded = !draft.isQuestionsExpanded;
     });
   };
+
+  const handleOpenPromptModal = () => {
+    setPageState((draft) => {
+      draft.isPromptModalOpen = true;
+    });
+  };
+
+  const handleClosePromptModal = () => {
+    setPageState((draft) => {
+      draft.isPromptModalOpen = false;
+    });
+  };
+
+  const prompt = Prompt.generate({
+    role: requirements.role,
+    context: parserState.data?.text || "",
+    questionCount: requirements.questionCount,
+    difficultyLevel: requirements.difficulty,
+  });
 
   const steps: Step[] = [
     {
@@ -221,13 +247,6 @@ export const AnalyzeView = () => {
       );
     }
 
-    const prompt = Prompt.generate({
-      role: requirements.role,
-      context: parserState.data?.text || "",
-      questionCount: requirements.questionCount,
-      difficultyLevel: requirements.difficulty,
-    });
-
     nodeToRender = (
       <Styled.ResultContainer>
         <PDFViewSection
@@ -249,7 +268,7 @@ export const AnalyzeView = () => {
               role={requirements.role}
               questionCount={requirements.questionCount}
               onRegenerate={handleRegenerateQuestions}
-              prompt={prompt}
+              onOpenPromptModal={handleOpenPromptModal}
             />
           </Collapse>
           <Styled.SectionHeader
@@ -259,9 +278,11 @@ export const AnalyzeView = () => {
             }}
           >
             <Styled.SectionTitle>Interview Questions</Styled.SectionTitle>
-            <Styled.ExpandButton $isExpanded={pageState.isQuestionsExpanded}>
-              <ChevronDown size={20} />
-            </Styled.ExpandButton>
+            {generateQuestionsRequestStates.isPending ? null : (
+              <Styled.ExpandButton $isExpanded={pageState.isQuestionsExpanded}>
+                <ChevronDown size={20} />
+              </Styled.ExpandButton>
+            )}
           </Styled.SectionHeader>
           {questionsNode}
         </Box>
@@ -280,6 +301,11 @@ export const AnalyzeView = () => {
         isOpen={pageState.isUploadModalOpen}
         onClose={handleUploadModalClose}
         onComplete={handleUploadModalComplete}
+      />
+      <PromptPreviewModal
+        isOpen={pageState.isPromptModalOpen}
+        onClose={handleClosePromptModal}
+        prompt={prompt}
       />
     </>
   );

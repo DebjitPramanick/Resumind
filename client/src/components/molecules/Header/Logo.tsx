@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { useAppContext } from "@/contexts";
+import { useRouter } from "next/router";
 
 const LogoContainer = styled(Link)`
   display: flex;
@@ -27,8 +29,17 @@ const LogoText = styled.span`
 `;
 
 const Logo = () => {
+  const { setFile, handleSetRole } = useAppContext();
+  const router = useRouter();
+
+  const handleLogoClick = () => {
+    router.push("/");
+    setFile(null);
+    handleSetRole("");
+  };
+
   return (
-    <LogoContainer href="/">
+    <LogoContainer href="/" onClick={handleLogoClick}>
       <LogoText>ResuMind</LogoText>
     </LogoContainer>
   );

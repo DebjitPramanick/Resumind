@@ -8,6 +8,7 @@ interface UploadSectionProps extends FlexProps {
 }
 
 export const UploadSection = styled(Flex)<UploadSectionProps>`
+  width: 100%;
   min-height: 400px;
   align-items: center;
   justify-content: center;

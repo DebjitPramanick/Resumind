@@ -1,45 +1,28 @@
-import { useState } from "react";
-import { ChevronDown, Copy, Check, Eye } from "react-feather";
-import { useClipboard } from "@/hooks";
+import { Eye } from "react-feather";
 import {
   QuestionDifficultyLevel,
   QUESTION_DIFFICULTY_LEVELS,
 } from "@/constants";
 import * as Styled from "./index.styled";
 import { useAppContext } from "@/contexts";
-import { PromptPreviewModal } from "@/components/shared/PromptPreviewModal";
 
 interface QuestionConfigProps {
-  prompt: string;
   difficulty: QuestionDifficultyLevel;
   role: string;
   questionCount: number;
   onRegenerate: () => void;
+  onOpenPromptModal: () => void;
 }
 
 export const QuestionConfig = ({
-  prompt,
   difficulty,
   role,
   questionCount,
   onRegenerate,
+  onOpenPromptModal,
 }: QuestionConfigProps) => {
-  const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
-  const { copy, copied } = useClipboard();
   const { handleSetDifficulty, handleSetQuestionCount, handleSetRole } =
     useAppContext();
-
-  const handleOpenPromptModal = () => {
-    setIsPromptModalOpen(true);
-  };
-
-  const handleClosePromptModal = () => {
-    setIsPromptModalOpen(false);
-  };
-
-  const handleCopyPrompt = () => {
-    copy(prompt);
-  };
 
   const handleDifficultyChange = (newDifficulty: QuestionDifficultyLevel) => {
     handleSetDifficulty(newDifficulty);
@@ -97,7 +80,7 @@ export const QuestionConfig = ({
 
       <Styled.ConfigItem>
         <Styled.Label>Prompt</Styled.Label>
-        <Styled.PreviewButton onClick={handleOpenPromptModal}>
+        <Styled.PreviewButton onClick={onOpenPromptModal}>
           <Eye size={16} />
           Preview Prompt
         </Styled.PreviewButton>
@@ -106,12 +89,6 @@ export const QuestionConfig = ({
       <Styled.RegenerateButton variant="filled" onClick={onRegenerate}>
         Regenerate Questions
       </Styled.RegenerateButton>
-
-      <PromptPreviewModal
-        isOpen={isPromptModalOpen}
-        onClose={handleClosePromptModal}
-        prompt={prompt}
-      />
     </Styled.Container>
   );
 };

@@ -36,8 +36,12 @@ export const HomeView = () => {
   if (!file) {
     return (
       <Styled.HomeContainer>
-        <Styled.Title>Upload Resume</Styled.Title>
-        <Styled.Subtitle>
+        <Styled.Title>
+          Upload your resume and let{" "}
+          <span style={{ color: theme.colors.primary }}>AI generate</span>{" "}
+          tailored technical interview questions
+        </Styled.Title>
+        <Styled.Subtitle mt={theme.spacing.md}>
           Drag and drop your resume or click to browse from your computer
         </Styled.Subtitle>
         <FileUpload onFileSelect={handleFileSelect} />

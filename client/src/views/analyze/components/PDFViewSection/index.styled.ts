@@ -1,4 +1,5 @@
 import { Box, Button } from "@/components/atoms";
+import { mediaQueryMobileOrTablet } from "@/styles/mixins";
 import styled from "styled-components";
 
 export const PDFHeader = styled(Box)`
@@ -11,6 +12,7 @@ export const PDFHeader = styled(Box)`
 `;
 
 export const FileInfo = styled(Box)`
+  width: calc(100% - 120px);
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};
@@ -20,6 +22,10 @@ export const FileName = styled.span`
   ${({ theme }) => theme.typography.body1};
   color: ${({ theme }) => theme.colors.text.primary};
   font-weight: 500;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const FileSize = styled.span`
@@ -29,6 +35,7 @@ export const FileSize = styled.span`
 
 export const UploadNewButton = styled(Button).attrs({})`
   margin-left: auto;
+  white-space: nowrap;
 `;
 
 export const PDFSection = styled(Box)`
@@ -37,4 +44,12 @@ export const PDFSection = styled(Box)`
   border: 1px solid ${({ theme }) => theme.colors.border};
   overflow: hidden;
   height: 100%;
+`;
+
+export const PDFViewerContainer = styled(Box)`
+  height: calc(100% - 78px);
+
+  ${mediaQueryMobileOrTablet} {
+    height: 600px;
+  }
 `;

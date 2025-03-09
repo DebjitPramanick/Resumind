@@ -11,7 +11,7 @@ const progressAnimation = keyframes`
 `;
 
 export const Container = styled.div`
-  height: 100%;
+  height: calc(100vh - 72px - 32px);
   display: flex;
   flex-direction: column;
   justify-content: center;

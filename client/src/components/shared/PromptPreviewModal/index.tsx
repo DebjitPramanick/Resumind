@@ -1,6 +1,7 @@
 import { X } from "react-feather";
 import useClipboard from "@/hooks/useClipboard";
 import * as Styled from "./index.styled";
+import { useEffect, useState } from "react";
 
 interface PromptPreviewModalProps {
   isOpen: boolean;
@@ -14,10 +15,24 @@ export const PromptPreviewModal = ({
   prompt,
 }: PromptPreviewModalProps) => {
   const { copy, copied } = useClipboard();
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleCopy = () => {
     copy(prompt);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    } else {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 200); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!isVisible) return null;
 
   return (
     <>
