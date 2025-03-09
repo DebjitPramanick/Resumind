@@ -29,7 +29,7 @@ const LogoText = styled.span`
 const Logo = () => {
   return (
     <LogoContainer href="/">
-      <LogoText>Nexus</LogoText>
+      <LogoText>ResuMind</LogoText>
     </LogoContainer>
   );
 };

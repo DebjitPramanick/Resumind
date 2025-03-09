@@ -4,7 +4,7 @@ import { AlertCircle } from "react-feather";
 
 export const AnalyzeContainer = styled(Box)`
   margin: 0 auto;
-  height: calc(100vh - 72px - 64px);
+  height: calc(100vh - 72px - 32px);
 `;
 
 export const Title = styled(Text)`

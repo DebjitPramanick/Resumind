@@ -1,4 +1,4 @@
-import { Button } from "@/components/atoms";
+import { Box, Button, Text } from "@/components/atoms";
 import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
@@ -40,34 +40,60 @@ export const PDFViewer = styled.div`
   }
 `;
 
-export const QuestionsSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
+export const QuestionsSection = styled(Box)`
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
 `;
 
-export const QuestionsHeader = styled.div`
+export const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: ${({ theme }) => theme.spacing.md};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: ${({ theme }) => theme.spacing.md};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 12px 12px 0 0;
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  cursor: pointer;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surface};
+  }
 `;
 
-export const Title = styled.h2`
-  ${({ theme }) => theme.typography.h2};
+export const Title = styled(Text)`
+  ${({ theme }) => theme.typography.body1};
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
+`;
+
+interface ExpandButtonProps {
+  $isExpanded: boolean;
+}
+
+export const ExpandButton = styled.div<ExpandButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  transition: transform 0.2s ease;
+  transform: rotate(${({ $isExpanded }) => ($isExpanded ? "-180deg" : "0deg")});
 `;
 
 export const QuestionsList = styled.div`
   display: flex;
   flex-direction: column;
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: 0 0 12px 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   gap: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.md};
   overflow-y: auto;
+  max-height: auto;
 `;
 
 export const QuestionCard = styled.div`
@@ -83,6 +109,7 @@ export const QuestionHeader = styled.div`
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   background: ${({ theme }) => theme.colors.surfaceAlt};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 12px 12px 0 0;
 `;
 
 export const QuestionNumber = styled.span`
@@ -134,9 +161,6 @@ export const FileSize = styled.span`
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-export const UploadNewButton = styled(Button).attrs({
-  variant: "transparent",
-  size: "small",
-})`
+export const UploadNewButton = styled(Button).attrs({})`
   margin-left: auto;
 `;

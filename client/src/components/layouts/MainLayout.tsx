@@ -7,7 +7,7 @@ const LayoutContainer = styled.div`
 `;
 
 const MainContent = styled.main`
-  padding: ${({ theme }) => `${theme.spacing.xl} ${theme.spacing.md}`};
+  padding: ${({ theme }) => theme.spacing.md};
   min-height: calc(100vh - 72px);
 `;
 

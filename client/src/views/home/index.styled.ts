@@ -133,7 +133,7 @@ export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: ${({ theme }) => theme.spacing.md};
-  height: calc(100vh - 72px - 64px);
+  height: calc(100vh - 72px - 32px);
   width: 100%;
 `;
 

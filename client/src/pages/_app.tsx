@@ -6,13 +6,20 @@ import "@fontsource/manrope/700.css"; // Bold
 import type { AppProps } from "next/app";
 import { AppProvider } from "@/contexts";
 import { MainLayout } from "@/components/layouts";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AppProvider>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-    </AppProvider>
+    <>
+      <Head>
+        <title>ResuMind</title>
+        <meta name="description" content="ResuMind" />
+      </Head>
+      <AppProvider>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </AppProvider>
+    </>
   );
 }

@@ -18,23 +18,23 @@ interface StepProgressProps {
 
 const getStepIcon = (step: Step) => {
   if (step.status === "active") {
-    return <Spinner size="small" color="white" />;
+    return <Spinner color="white" />;
   }
 
   if (step.status === "error") {
-    return <AlertCircle size={16} />;
+    return <AlertCircle size={24} color="white" />;
   }
 
   if (step.status === "completed") {
     switch (step.title.toLowerCase()) {
       case "parsing resume":
-        return <FileText size={16} />;
+        return <FileText size={24} color="white" />;
       case "generating questions":
-        return <HelpCircle size={16} />;
+        return <HelpCircle size={24} color="white" />;
       case "ready":
-        return <CheckCircle size={16} />;
+        return <CheckCircle size={24} color="white" />;
       default:
-        return <CheckCircle size={16} />;
+        return <CheckCircle size={24} color="white" />;
     }
   }
 
